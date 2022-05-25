@@ -4,19 +4,35 @@ FROM python:3.10-alpine
 # when run within docker containers
 ENV PYTHONUNBUFFERED 1
 
-COPY ./requirements.txt /requirements.txt
-RUN apk add --update --no-cache postgresql-client
-RUN apk add --update --no-cache --virtual .tmp-build-deps \
-    gcc libc-dev linux-headers postgresql-dev
-RUN pip install -r /requirements.txt
-RUN apk del .tmp-build-deps
-
+COPY ./requirements.txt /tmp/requirements.txt
 RUN mkdir /app
-WORKDIR /app
 COPY ./app /app
+COPY ./scripts /scripts
+WORKDIR /app
+EXPOSE 8000
 
-RUN adduser -D user
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client jpeg-dev && \
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev zlib zlib-dev linux-headers && \
+    /py/bin/pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp && \
+    apk del .tmp-build-deps && \
+    adduser \
+        --disabled-password \
+        --no-create-home \
+        django-user && \
+#    mkdir -p /vol/web/media && \
+#    mkdir -p /vol/web/static && \
+#    chown -R django-user:django-user /vol && \
+#    chmod -R 755 /vol && \
+RUN chmod -R +x /scripts
+
+ENV PATH="/scripts:/py/bin:$PATH"
 
 # change user to non-root
-USER user
+USER django-user
+
+CMD ["run.sh"]
 
