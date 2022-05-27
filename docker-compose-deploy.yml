@@ -5,6 +5,8 @@ services:
     build:
       context: .
     restart: always
+    volumes:
+      - static-data:/vol/web
     environment:
       SECRET_KEY: "${SECRET_KEY}"
       ALLOWED_HOSTS: "${ALLOWED_HOSTS}"
@@ -20,9 +22,9 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: "${POSTGRES_DB}"
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASS}"
 
   pgadmin:
     image: dpage/pgadmin4
@@ -40,10 +42,13 @@ services:
       context: ./proxy
     restart: always
     ports:
-      - "80:8000"
+      - 80:8000
     depends_on:
       - app
+    volumes:
+      - static-data:/vol/static
 
 volumes:
   postgres-data:
+  static-data:
   
