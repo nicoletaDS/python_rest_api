@@ -7,6 +7,11 @@ The MediBuddy project is a fictive application for learning purpuses. This consi
 
 ## API Endpoints
 
+-> Api documentation:
+
+    GET : http://127.0.0.1:8000/api/docs/
+    
+
 -> Register new doctor-user:
 
     POST : http://127.0.0.1:8000/api/signup/doctor/ 
