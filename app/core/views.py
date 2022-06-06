@@ -2,6 +2,7 @@ from datetime import datetime
 from django.http import Http404
 from rest_framework import generics, status, permissions
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken, APIView
 from rest_framework import viewsets
@@ -38,6 +39,7 @@ class PatientSignupView(generics.GenericAPIView):
     """
     serializer_class=serializers.PatientSignupSerializer
     permission_classes=[permissions.IsAuthenticated&IsDoctorUser]
+    authentication_classes = (TokenAuthentication,)
     
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
@@ -80,6 +82,7 @@ class LogoutView(APIView):
     """
     The logout page.
     """
+    authentication_classes = (TokenAuthentication,)
     def post(self, request, format=None):
         try:
             request.auth.delete()
@@ -96,6 +99,7 @@ class DoctorView(generics.RetrieveAPIView, generics.UpdateAPIView, generics.Dest
     """
     permission_classes=[permissions.IsAuthenticated&IsDoctorUser]
     serializer_class=serializers.DoctorSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get_object(self):
         doctor = Doctor.objects.get(pk=self.request.user)
@@ -118,6 +122,7 @@ class PatientView(generics.RetrieveAPIView):
     """
     permission_classes=[permissions.IsAuthenticated&IsPatientUser]
     serializer_class=serializers.PatientSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get_object(self):
         patient = models.Patient.objects.get(pk=self.request.user)
@@ -131,6 +136,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     """
     permission_classes=[permissions.IsAuthenticated&IsDoctorUser]
     serializer_class=serializers.PatientSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         """
@@ -156,6 +162,7 @@ class ChangePassword(APIView):
     An endpoint for changing the user password.
     """
     permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = (TokenAuthentication,)
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -184,6 +191,7 @@ class PatientMeasurementViewSet(viewsets.ModelViewSet):
     """
     serializer_class = serializers.MeasurementSerializer
     permission_classes=[permissions.IsAuthenticated&IsPatientUser]
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         """Retrieve the measurements data for the authenticated user, for the specified date."""
@@ -207,6 +215,7 @@ class DoctorMeasurementView(generics.ListAPIView):
     """
     serializer_class = serializers.MeasurementSerializer
     permission_classes = [permissions.IsAuthenticated&CanGetMeasurement]
+    authentication_classes = (TokenAuthentication,)
     lookup_field = 'patient_id'
 
     def get_queryset(self):
@@ -230,6 +239,7 @@ class PatientNotificationViewSet(viewsets.ModelViewSet):
     """
     serializer_class = serializers.PatientNotificationSerializer
     permission_classes=[permissions.IsAuthenticated&CanUpdateNotification]
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         patient = models.Patient.objects.get(pk=self.request.user)
@@ -242,6 +252,7 @@ class DoctorNotificationViewSet(viewsets.ModelViewSet):
     """
     permission_classes=[permissions.IsAuthenticated&IsDoctorUser]
     serializer_class=serializers.DoctorNotificationSerializer
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         """
