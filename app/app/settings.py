@@ -161,12 +161,14 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://ec2-34-234-75-154.compute-1.amazonaws.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "http://ec2-34-234-75-154.compute-1.amazonaws.com"
 ]
 
 CORS_ALLOW_METHODS = [
