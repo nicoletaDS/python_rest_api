@@ -102,7 +102,7 @@ class DoctorView(generics.RetrieveAPIView, generics.UpdateAPIView, generics.Dest
     authentication_classes = (TokenAuthentication,)
 
     def get_object(self):
-        doctor = Doctor.objects.get(pk=self.request.user)
+        doctor = models.Doctor.objects.get(pk=self.request.user)
         return doctor
 
     def destroy(self, request, *args, **kwargs):
