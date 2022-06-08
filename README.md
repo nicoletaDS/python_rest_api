@@ -6,6 +6,7 @@ The MediBuddy project is a fictive application for learning purpuses. This consi
 
 ## Project URL:
     api documentation:
+    [MediBuddy_API](http://ec2-34-234-75-154.compute-1.amazonaws.com/api/docs/)
     
     http://ec2-34-234-75-154.compute-1.amazonaws.com/api/docs/
 
