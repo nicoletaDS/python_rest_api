@@ -4,6 +4,10 @@
 The python django-restframework app represents the backend of the MediBuddy App as the web server accepting HTTP requests from the client. 
 The MediBuddy project is a fictive application for learning purpuses. This consists of a wearable device for alderly patientients to monitor their fiziological parameters (EKG, humidity, temperature, puls). If this parameters are not within the normal ranges, the patient/user will receive a notification via Smartphone. This application also includes a web interface, where doctors can create an account, register patients, edit and monitor patients files. 
 
+## Project URL:
+    api documentation:
+    
+    http://ec2-34-234-75-154.compute-1.amazonaws.com/api/docs/
 
 ## API Endpoints
 
